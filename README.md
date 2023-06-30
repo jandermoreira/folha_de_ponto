@@ -10,7 +10,7 @@ Passos:
  2) Clique em 'Novo projeto' ('New Project') e crie um projeto em branco (blank)
  3) Dê ao projeto o nome que quiser
  4) Copie o conteúdo do arquivo **folha_de_ponto.tex** e substitua o texto padrão que está lá
- 5) Preencha os dados (logo abaixo neste documento), tomando cuidado de não apagar as chaves ou as vírgulas que circundam os dados
+ 5) Preencha os dados necessários no local adequado do código, tomando cuidado de não apagar as chaves ou as vírgulas que circundam os dados
  6) Clique em 'Recompilar' ('Recompile')
  7) Verifique os dados e corrija quando necessário; atualize o mês e o ano para a data que deseja
  7) Clique no ícone para baixar o PDF criado (logo ao lado de 'Recompilar')
