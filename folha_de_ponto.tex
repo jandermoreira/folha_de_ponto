@@ -1,0 +1,150 @@
+%! Autor = Jander Moreira
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Instruções de uso (versão fácil):
+%%
+%%  1) Visite overleaf.com (necessário registro e login)
+%%  2) Clique em 'Novo projeto' ('New Project') e crie um projeto em branco
+%%      (blank)
+%%  3) Dê ao projeto o nome que quiser
+%%  4) Copie este documento inteiro e substitua o texto padrão que está lá
+%%  5) Preencha os dados (logo abaixo neste documento), tomando cuidado de
+%%      não apagar as chaves ou as vírgulas que circundam os dados
+%%  6) Clique em 'Recompilar' ('Recompile')
+%%  7) Verifique os dados e corrija quando necessário; atualize o mês e
+%%      o ano para a data que deseja
+%%  7) Clique no ícone para baixar o PDF criado (logo ao lado de
+%%      'Recompilar')
+%%  8) Imprima o PDF baixado
+%%
+%%  O mesmo documento pode ser editado no Overleaf nas próximas vezes,
+%%      apenas alterando-se mês e ano
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage[brazilian]{translator}
+\usepackage{tikz}
+\usetikzlibrary{calendar, shapes.multipart, positioning}
+\pgfkeys{
+    /folha/.cd,
+    empregador/.store in = \NomeEmpregador,
+    documentos empregador/.store in = \DocumentosEmpregador,
+    empregado/.store in = \NomeEmpregado,
+    documentos empregado/.store in = \DocumentosEmpregado,
+    mes/.store in = \MesAtual,
+    ano/.store in = \AnoAtual,
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%        EDITE APENAS AQUI   :-)
+%
+%  * Mantenha as chaves em torno dos nomes e documentos
+%
+\pgfkeys{
+    /folha/.cd,
+    empregador = {Fulano de Tal},
+    documentos empregador = {CPF: 123.321.999-00},
+    empregado = {Ciclana de Outrotal},
+    documentos empregado = {NIT: 123.123.321-99, CTPS: 23123-9},
+    mes = 7,
+    ano = 2023,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage{geometry}
+\geometry{left = 1.5cm, right = 1.5cm, top = 1.25cm, bottom = 1cm}
+
+\tikzset{
+    dia/.style = {
+        draw,
+        thick,
+        anchor = west,
+        align = left,
+        text width = 3.4cm,
+        minimum height = 0.65cm,
+        font = \small\sffamily,
+        inner sep = 0pt,
+    },
+    celula/.style = {
+        draw,
+        thick,
+        text width = 2.4cm,
+        minimum height = 0.65cm,
+        font = \small\sffamily\bfseries,
+        inner sep = 0pt,
+        align = center,
+    },
+    folha/.style = {
+        day list downward,
+        day code = {
+            \node[dia] (node) {~Dia \tikzdaytext\ -- \DiaDaSemana\strut};
+            \foreach \i in {1, ..., 6}{
+                \node[celula, right = of node] (node) {\Texto\strut};
+            }
+        },
+        dates = \AnoAtual-\MesAtual-01 to \AnoAtual-\MesAtual-last,
+        day yshift = 0.65cm,
+    },
+    node distance = 0.0pt,
+}
+
+\tikzset{
+    /folha/dia da semana/.store in = \DiaDaSemana,
+    /folha/texto/.store in = \Texto,
+}
+
+\usepackage{tcolorbox}
+\tcbset{
+    colback = white,
+}
+\usepackage[portuges]{datetime2}
+
+
+\begin{document}
+\thispagestyle{empty}
+
+
+\begin{tcolorbox}
+    Empregador: \textbf{\NomeEmpregador}\par
+    Documentos: \textbf{\DocumentosEmpregador}
+    \tcblower
+    Empregada: \textbf{\NomeEmpregado}\par
+    Documentos: \textbf{\DocumentosEmpregado}
+\end{tcolorbox}
+
+\vspace{-0.55cm}
+\begin{tcolorbox}
+    \centering\large\bfseries
+    Folha de Ponto --
+    \MakeUppercase{\DTMportugesmonthname{\MesAtual}/\AnoAtual}
+\end{tcolorbox}
+
+\medskip
+\centering
+\begin{tikzpicture}
+    \node[dia, draw = none,  minimum height = 1.4cm] (node) {\strut};
+    \foreach \txt in {Entrada\\(manhã), Saída\\(manhã),
+    Entrada\\(tarde), Saída\\(tarde), Rubrica\\Empregador, Rubrica\\Empregado}{
+        \node[celula, right = of node, minimum height = 1.4cm] (node) {\txt\strut};
+    }
+\end{tikzpicture}\\
+\begin{tikzpicture}
+    \calendar[folha]
+    if (Sunday) [red!80!black, /folha/dia da semana = Domingo, /folha/texto = ---]
+    if (Monday) [/folha/dia da semana = Segunda, /folha/texto = ]
+    if (Tuesday) [/folha/dia da semana = Terça, /folha/texto = ]
+    if (Wednesday) [/folha/dia da semana = Quarta, /folha/texto = ]
+    if (Thursday) [/folha/dia da semana = Quinta, /folha/texto = ]
+    if (Friday) [/folha/dia da semana = Sexta, /folha/texto = ]
+    if (Saturday) [red!80!black, /folha/dia da semana = Sábado, /folha/texto = ---]
+    ;
+\end{tikzpicture}
+
+\vfill\noindent
+\hrulefill
+
+\end{document}
